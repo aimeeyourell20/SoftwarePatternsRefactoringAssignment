@@ -28,8 +28,8 @@ public class Menu extends JFrame{
 	private JTextField fNameTxt, sNameTxt, ppsTxt, dobTxt, customerIdTxt, passwordTxt;	
 	private Container content;
 	private Customer cust;
-	private JPanel panel2;
-	private JButton add;
+	private JPanel panel, panel2;
+	private JButton add, cancel;
 	private String PPS,firstName,surname,DOB,CustomerID;
 	
 	public static void main(String[] args)
@@ -108,6 +108,77 @@ public class Menu extends JFrame{
 			});frame.setVisible(true);	
 	}
 	
+	//Adds panel information
+		public void addPanelInfo() {
+			panel2.add(add);
+			panel2.add(cancel);
+			content.add(panel, BorderLayout.CENTER);
+			content.add(panel2, BorderLayout.SOUTH);
+
+			frame1.setVisible(true);
+		}
+		
+		//Frame size
+		public void frameSize() {
+			frame.setSize(400, 300);
+			frame.setLocation(200, 200);
+		}
+		
+		public void windowListener() {
+			frame.addWindowListener(new WindowAdapter() {
+				public void windowClosing(WindowEvent we) { System.exit(0); }
+			});
+		}
+	
+	//Creates a new customer	
+		public void newCustomer() {
+			
+			frame.dispose();		
+			frame1 = new JFrame("Create New Customer");
+			frameSize();
+			windowListener();
+			
+			Container content = frame1.getContentPane();
+			content.setLayout(new BorderLayout());
+				
+			fName = new JLabel("First Name:", SwingConstants.RIGHT);
+			sName = new JLabel("Surname:", SwingConstants.RIGHT);
+			pps = new JLabel("PPS Number:", SwingConstants.RIGHT);
+			dob = new JLabel("Date of birth", SwingConstants.RIGHT);
+			fNameTxt = new JTextField(20);
+			sNameTxt = new JTextField(20);
+			ppsTxt = new JTextField();
+			dobTxt = new JTextField();
+			
+			panel = new JPanel(new GridLayout(6, 2));
+			panel.add(fName);
+			panel.add(fNameTxt);
+			panel.add(sName);
+			panel.add(sNameTxt);
+			panel.add(pps);
+			panel.add(ppsTxt);
+			panel.add(dob);
+			panel.add(dobTxt);
+					
+			panel2 = new JPanel();
+			add = new JButton("Add");
+			cancel = new JButton("Cancel");
+				
+			add.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addCustomer();
+				}
+			});
+				
+			cancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cancel();
+				}
+			});
+				
+				addPanelInfo();	
+			
+		}
 
 	
 	public void admin()
