@@ -19,13 +19,16 @@ import java.util.Date;
 public class Menu extends JFrame{
 	
 	private ArrayList<Customer> customerList = new ArrayList<Customer>();
+	private ArrayList<CustomerAccount> customerAccountList = new ArrayList<CustomerAccount>();
+	private ArrayList<Admin> adminList = new ArrayList<Admin>();
+	private ArrayList<AccountTransaction> transactionList = new ArrayList<AccountTransaction>();
     private int position = 0;
 	private String StrPassword;
 	private Customer customer = null;
 	private CustomerAccount acc = new CustomerAccount();
 	private JFrame frame, frame1;
-	private JLabel fName, sName, pps, dob, customerId, password;
-	private JTextField fNameTxt, sNameTxt, ppsTxt, dobTxt, customerIdTxt, passwordTxt;	
+	private JLabel fName, sName, pps, dob, customerId, password, username;
+	private JTextField fNameTxt, sNameTxt, ppsTxt, dobTxt, customerIdTxt, passwordTxt, usernameTxt;	
 	private Container content;
 	private Customer cust;
 	private JPanel panel, panel2;
@@ -216,6 +219,74 @@ public class Menu extends JFrame{
 				}
 			});	
 		}
+		
+		//Creates a new admin
+		public void newAdmin() {
+			
+			frame.dispose();		
+			frame1 = new JFrame("Create New Admin");
+			frameSize();
+			windowListener();
+			
+			Container content = frame1.getContentPane();
+			content.setLayout(new BorderLayout());
+				
+			username = new JLabel("Username:", SwingConstants.RIGHT);
+			usernameTxt = new JTextField(20);
+			JPanel panel = new JPanel(new GridLayout(6, 2));
+			panel.add(username);
+			panel.add(usernameTxt);
+					
+			panel2 = new JPanel();
+			add = new JButton("Add");
+			cancel = new JButton("Cancel");
+				
+				add.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					addAdmin();
+					}
+				});
+				
+				cancel.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						cancel();
+					}
+				});
+				
+				addPanelInfo();
+			
+			
+		}
+		
+		//Adds admin to the arraylist
+		public void addAdmin() {
+			
+			String username = usernameTxt.getText();
+			StrPassword = passwordCheck();
+			
+			add.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					frame1.dispose();			
+					admin = new Admin(username, StrPassword);
+					if(adminList.contains(username))
+					{
+						JOptionPane.showMessageDialog(frame, "Account already exists",  username, JOptionPane.INFORMATION_MESSAGE);
+						menuStart();
+						frame.dispose();
+					
+					}else {
+						
+						adminList.add(admin);
+						JOptionPane.showMessageDialog(frame, "Username = " + username +"\n StrPassword = " + StrPassword  ,"Admin created.",  JOptionPane.INFORMATION_MESSAGE);
+						addUserToFile();
+						admin();
+						frame.dispose();
+					}
+					
+				}
+			});	
+		}
+
 		
 		public void cancel() {
 			
