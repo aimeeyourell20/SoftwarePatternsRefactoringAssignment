@@ -179,6 +179,50 @@ public class Menu extends JFrame{
 				addPanelInfo();	
 			
 		}
+		
+		//Adds customer to the arraylist
+		public void addCustomer() {
+			
+			String PPS = ppsTxt.getText();
+			String firstName = fNameTxt.getText();
+			String surname = sNameTxt.getText();
+			String DOB = dobTxt.getText();
+			StrPassword = StrPassword();
+
+			String CustomerID = "ID"+PPS ;
+			
+			add.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					frame1.dispose();
+				    ArrayList<CustomerAccount> accounts = new ArrayList<CustomerAccount> ();
+					customer = new Customer(PPS, surname, firstName, DOB, CustomerID, StrPassword, accounts);
+					//Ensures that the accounts are unique
+					if(customerList.contains(CustomerID))
+					{
+						JOptionPane.showMessageDialog(frame, "Account already exists",  CustomerID, JOptionPane.INFORMATION_MESSAGE);
+						menuStart();
+						frame.dispose();
+					
+					}else {
+						
+						customerList.add(customer);
+						JOptionPane.showMessageDialog(frame, "CustomerID = " + CustomerID +"\n Password = " + StrPassword  ,"Customer created.",  JOptionPane.INFORMATION_MESSAGE);
+						addUserToFile();
+						menuStart();
+						frame.dispose();
+					}
+									
+					
+				}
+			});	
+		}
+		
+		public void cancel() {
+			
+			frame1.dispose();
+			menuStart();
+			
+		}
 
 	
 	public void admin()
