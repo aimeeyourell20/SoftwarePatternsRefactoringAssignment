@@ -31,6 +31,7 @@ public class Menu extends JFrame{
 	private JTextField fNameTxt, sNameTxt, ppsTxt, dobTxt, customerIdTxt, passwordTxt, usernameTxt;	
 	private Container content;
 	private Customer cust;
+	Admin admin;
 	private JPanel panel, panel2;
 	private JButton add, cancel;
 	private String PPS,firstName,surname,DOB,CustomerID;
