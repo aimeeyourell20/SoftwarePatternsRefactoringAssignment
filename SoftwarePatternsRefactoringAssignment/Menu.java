@@ -693,38 +693,13 @@ public class Menu extends JFrame{
 		
 		interestButton.addActionListener(new ActionListener(  ) {
 			public void actionPerformed(ActionEvent ae) {
-
-				boolean loop = true;
 				
-				boolean found = false;
-			
-				if(customerList.isEmpty())
-				{
-					JOptionPane.showMessageDialog(frame, "There are no customers yet!"  ,"Oops!",  JOptionPane.INFORMATION_MESSAGE);
-					frame.dispose();
-					admin();
-					
-				}
-				else
-				{
-			    while(loop)
-			    {
-			    Object customerID = JOptionPane.showInputDialog(frame, "Customer ID of Customer You Wish to Apply Interest to:");
-			    
-			    for (Customer aCustomer: customerList){
-			    	
-			    	if(aCustomer.getCustomerID().equals(customerID))
-			    	{
-			    		found = true;
-			    		customer = aCustomer; 
-			    		loop = false;
-			    	}					    	
-			    }
+				customerInformation();
 			    
 			    if(found == false)
 			    {
 			    	int reply  = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?", JOptionPane.YES_NO_OPTION);
-			    	if (reply == JOptionPane.YES_OPTION) {
+			    	if (reply == JOptionPane.YES_OPTION){
 			    		loop = true;
 			    	}
 			    	else if(reply == JOptionPane.NO_OPTION)
@@ -739,11 +714,8 @@ public class Menu extends JFrame{
 			    {
 			    	frame.dispose();
 			    	frame = new JFrame("Administrator Menu");
-					frame.setSize(400, 300);
-					frame.setLocation(200, 200);
-					frame.addWindowListener(new WindowAdapter() {
-						public void windowClosing(WindowEvent we) { System.exit(0); }
-					});          
+			    	frameSize();
+					windowListener();           
 					frame.setVisible(true);
 				
 				
@@ -788,7 +760,7 @@ public class Menu extends JFrame{
 				    {
 				    	if(customer.getAccounts().get(i).getNumber() == box.getSelectedItem() )
 				    	{
-				    		acc = customer.getAccounts().get(i);
+				    		customerAccount = customer.getAccounts().get(i);
 				    	}
 				    }
 										
@@ -800,16 +772,16 @@ public class Menu extends JFrame{
 						 	
 						 	while(loop)
 						 	{
-							String interestString = JOptionPane.showInputDialog(frame, "Enter interest percentage you wish to apply: \n NOTE: Please enter a numerical value. (with no percentage sign) \n cust.g: If you wish to apply 8% interest, enter '8'");//the isNumeric method tests to see if the string entered was numeric. 
+							String interestString = JOptionPane.showInputDialog(frame, "Enter interest percentage you wish to apply: \n NOTE: Please enter a numerical value. (with no percentage sign) \n E.g: If you wish to apply 8% interest, enter '8'");//the isNumeric method tests to see if the string entered was numeric. 
 							if(isNumeric(interestString))
 							{
 								
 								interest = Double.parseDouble(interestString);
 								loop = false;
 								
-								acc.setBalance(acc.getBalance() + (acc.getBalance() * (interest/100)));
+								customerAccount.setBalance(customerAccount.getBalance() + (customerAccount.getBalance() * (interest/100)));
 								
-								JOptionPane.showMessageDialog(frame, interest + "% interest applied. \n new balance = " + acc.getBalance() + euro ,"Success!",  JOptionPane.INFORMATION_MESSAGE);
+								JOptionPane.showMessageDialog(frame, interest + "% interest applied. \n new balance = " + customerAccount.getBalance() + euro ,"Success!",  JOptionPane.INFORMATION_MESSAGE);
 							}
 								
 							
@@ -836,18 +808,11 @@ public class Menu extends JFrame{
 						}
 			    }
 			    }
-			    }
+			    });
 			    
-			}	
-	     });
-		
 		editCustomerButton.addActionListener(new ActionListener(  ) {
 			public void actionPerformed(ActionEvent ae) {
 				
-				boolean loop = true;
-			
-				boolean found = false;
-			
 				if(customerList.isEmpty())
 				{
 					JOptionPane.showMessageDialog(frame, "There are no customers yet!"  ,"Oops!",  JOptionPane.INFORMATION_MESSAGE);
@@ -860,7 +825,7 @@ public class Menu extends JFrame{
 				
 			    while(loop)
 			    {
-			    Object customerID = JOptionPane.showInputDialog(frame, "Enter Customer ID:");
+			    Object customerID = JOptionPane.showInputDialog(frame);
 			    
 			    for (Customer aCustomer: customerList){
 			    	
@@ -893,14 +858,9 @@ public class Menu extends JFrame{
 			    }
 				
 				frame.dispose();
-				
-				frame.dispose();
 				frame = new JFrame("Administrator Menu");
-				frame.setSize(400, 300);
-				frame.setLocation(200, 200);
-				frame.addWindowListener(new WindowAdapter() {
-					public void windowClosing(WindowEvent we) { System.exit(0); }
-				});       
+				frameSize();
+				windowListener();   
 				
 				fName = new JLabel("First Name:", SwingConstants.LEFT);
 				sName = new JLabel("Surname:", SwingConstants.LEFT);
@@ -910,10 +870,10 @@ public class Menu extends JFrame{
 				password = new JLabel("StrPassword:", SwingConstants.LEFT);
 				fNameTxt = new JTextField(20);
 				sNameTxt = new JTextField(20);
-				ppsTxt = new JTextField(20);
-				dobTxt = new JTextField(20);
-				customerIdTxt = new JTextField(20);
-				passwordTxt = new JTextField(20);
+				ppsTxt = new JTextField();
+				dobTxt = new JTextField();
+				customerIdTxt = new JTextField();
+				passwordTxt = new JTextField();
 				
 				JPanel textPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		
@@ -939,7 +899,7 @@ public class Menu extends JFrame{
 				customerIdTxt.setText(customer.getCustomerID());
 				passwordTxt.setText(customer.getPassword());	
 				
-				//JLabel label1 = new JLabel("Edit customer details below. The save");
+				JLabel label1 = new JLabel("Edit customer details below. The save");
 				
 			
 				JButton saveButton = new JButton("Save");
@@ -947,11 +907,12 @@ public class Menu extends JFrame{
 				
 				cancelPanel.add(cancelButton, BorderLayout.SOUTH);
 				cancelPanel.add(saveButton, BorderLayout.SOUTH);
-			//	content.removeAll();
+				content.removeAll();
 				Container content = frame.getContentPane();
 				content.setLayout(new GridLayout(2, 1));
 				content.add(textPanel, BorderLayout.NORTH);
 				content.add(cancelPanel, BorderLayout.SOUTH);
+				textPanel.add(label1, BorderLayout.NORTH);
 				
 				frame.setContentPane(content);
 				frame.setSize(340, 350);
@@ -975,25 +936,22 @@ public class Menu extends JFrame{
 				
 				cancelButton.addActionListener(new ActionListener(  ) {
 					public void actionPerformed(ActionEvent ae) {
-						frame.dispose();
-						
+						frame.dispose();						
 						admin();				
 					}		
 			     });		
-				}}
-	     });
-		
+				}
+			}
+		});
+			
+	    	
 		summaryButton.addActionListener(new ActionListener(  ) {
 			public void actionPerformed(ActionEvent ae) {
 				frame.dispose();
-				
-				
 				frame = new JFrame("Summary of Transactions");
 				frame.setSize(400, 700);
 				frame.setLocation(200, 200);
-				frame.addWindowListener(new WindowAdapter() {
-					public void windowClosing(WindowEvent we) { System.exit(0); }
-				});          
+				windowListener();           
 				frame.setVisible(true);
 				
 				JLabel label1 = new JLabel("Summary of all transactions: ");
@@ -1014,38 +972,31 @@ public class Menu extends JFrame{
 				JScrollPane scrollPane = new JScrollPane(textArea);
 				textPanel.add(scrollPane);
 				
-			for (int a = 0; a < customerList.size(); a++)//For each customer, for each account, it displays each transaction.
+			for (int account = 0; account < customerList.size(); account++)//For each customer, for each account, it displays each transaction.
 				{
-					for (int b = 0; b < customerList.get(a).getAccounts().size(); b ++ )
+					for (int balance = 0; balance < customerList.get(account).getAccounts().size(); balance ++ )
 					{
-						acc = customerList.get(a).getAccounts().get(b);
-						for (int c = 0; c < customerList.get(a).getAccounts().get(b).getTransactionList().size(); c++)
+						customerAccount = customerList.get(account).getAccounts().get(balance);
+						for (int customer = 0; customer < customerList.get(account).getAccounts().get(balance).getTransactionList().size(); customer++)
 						{
-							
-							textArea.append(acc.getTransactionList().get(c).toString());
-							//Int total = acc.getTransactionList().get(c).getAmount(); //I was going to use this to keep a running total but I couldnt get it  working.
-							
+							textArea.append(customerAccount.getTransactionList().get(customer).toString());							
 						}				
 					}				
 				}
-				
-				
-				
-				
 				textPanel.add(textArea);
 				content.removeAll();
 				
 				
 				Container content = frame.getContentPane();
 				content.setLayout(new GridLayout(1, 1));
-			//	content.add(label1);
+				content.add(label1);
 				content.add(textPanel);
-				//content.add(returnPanel);
+				content.add(returnPanel);
 				
 				returnButton.addActionListener(new ActionListener(  ) {
 					public void actionPerformed(ActionEvent ae) {
 						frame.dispose();			
-					admin();				
+						admin();				
 					}		
 			     });	
 			}	
