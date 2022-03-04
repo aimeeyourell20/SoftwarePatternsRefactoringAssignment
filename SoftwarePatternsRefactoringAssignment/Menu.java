@@ -1225,6 +1225,9 @@ public class Menu extends JFrame{
 			public void actionPerformed(ActionEvent ae) {
 				frame.dispose();
 				
+				
+		        readUserFile();
+				
 				if(customerList.isEmpty())
 				{
 					JOptionPane.showMessageDialog(frame, "There are no customers yet!"  ,"Oops!",  JOptionPane.INFORMATION_MESSAGE);
@@ -1233,9 +1236,6 @@ public class Menu extends JFrame{
 				}
 				else
 				{
-				boolean loop = true;
-				
-				boolean found = false;
 			
 			    while(loop)
 			    {
@@ -1270,51 +1270,42 @@ public class Menu extends JFrame{
 			    	//a combo box in an dialog box that asks the admin what type of account they wish to create (deposit/current)
 				    String[] choices = { "Current Account", "Deposit Account" };
 				    String account = (String) JOptionPane.showInputDialog(null, "Please choose account type",
-				        "Account Type", JOptionPane.QUESTION_MESSAGE, null, choices, choices[1]); 
+				        "Account Type", JOptionPane.QUESTION_MESSAGE, null, choices, choices[1]);       
+				    JComboBox combobox=new JComboBox(choices);   
 				    
-				    if(account.equals("Current Account"))
+				    if(combobox.equals("Current Account"))
 				    {
 				    	//create current account
 				    	boolean valid = true;
-				    	double balance = 0;
-				    	String number = String.valueOf("C" + (customerList.indexOf(customer)+1) * 10 + (customer.getAccounts().size()+1));//this simple algorithm generates the account number
-				    	ArrayList<AccountTransaction> transactionList = new ArrayList<AccountTransaction>();
+				    	String accountNumber = String.valueOf("C" + (customerList.indexOf(customer)+1) * 10 + (customer.getAccounts().size()+1));//this simple algorithm generates the account number
 				    	int randomPIN = (int)(Math.random()*9000)+1000;
-				           String pin = String.valueOf(randomPIN);
-				    
-				           ATMCard atm = new ATMCard(randomPIN, valid);
-				    	
-				    	CustomerCurrentAccount current = new CustomerCurrentAccount(atm, number, balance, transactionList);
-				    	
+				        String pin = String.valueOf(randomPIN);				    
+				        ATMCard atm = new ATMCard(randomPIN, valid);				        
+				    	CustomerCurrentAccount current = new CustomerCurrentAccount(atm, pin, AccountBalance, transactionList);
 				    	customer.getAccounts().add(current);
-				    	JOptionPane.showMessageDialog(frame, "Account number = " + number +"\n PIN = " + pin  ,"Account created.",  JOptionPane.INFORMATION_MESSAGE);
-				    	
+				    	JOptionPane.showMessageDialog(frame, "Account number = " + accountNumber +"\n PIN = " + pin  ,"Account created.",  JOptionPane.INFORMATION_MESSAGE);				    	
 				    	frame.dispose();
 				    	admin();
 				    }
 				    
-				    if(account.equals("Deposit Account"))
+				    if(combobox.equals("Deposit Account"))
 				    {
 				    	//create deposit account
-				    	
-				    	double balance = 0, interest = 0;
-				    	String number = String.valueOf("D" + (customerList.indexOf(customer)+1) * 10 + (customer.getAccounts().size()+1));//this simple algorithm generates the account number
-				    	ArrayList<AccountTransaction> transactionList = new ArrayList<AccountTransaction>();
-				        	
-				    	CustomerDepositAccount deposit = new CustomerDepositAccount(interest, number, balance, transactionList);
-				    	
+				    	double interest = 0;
+				    	String accountNumber = String.valueOf("D" + (customerList.indexOf(customer)+1) * 10 + (customer.getAccounts().size()+1));//this simple algorithm generates the account number
+				    	CustomerDepositAccount deposit = new CustomerDepositAccount(interest, accountNumber, AccountBalance, transactionList);				    	
 				    	customer.getAccounts().add(deposit);
-				    	JOptionPane.showMessageDialog(frame, "Account number = " + number ,"Account created.",  JOptionPane.INFORMATION_MESSAGE);
-				    	
+				    	JOptionPane.showMessageDialog(frame, "Account number = " + accountNumber ,"Account created.",  JOptionPane.INFORMATION_MESSAGE);
 				    	frame.dispose();
 				    	admin();
-				    }
+				    			}
 			    
-			    }			   
-			    }
+			    			}			   
+			    		}
+					}
 				}
-			}
 	     });		
+
 
 		deleteCustomer.addActionListener(new ActionListener(  ) {
 			public void actionPerformed(ActionEvent ae) {
