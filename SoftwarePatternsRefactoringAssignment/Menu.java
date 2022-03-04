@@ -30,7 +30,6 @@ public class Menu extends JFrame{
 	private ArrayList<Admin> adminList = new ArrayList<Admin>();
 	private ArrayList<AccountTransaction> transactionList = new ArrayList<AccountTransaction>();
     private int position = 0;
-	private String StrPassword;
 	private Customer customer = null;
 	private CustomerAccount acc = new CustomerAccount();
 	private CustomerAccount customerAccount = new CustomerAccount();
@@ -44,7 +43,7 @@ public class Menu extends JFrame{
 	private Admin admin;
 	private JPanel panel, panel2;
 	private JButton add, cancel;
-	private String PPS,firstName,surname,DOB,CustomerID;
+	private String PPS,firstName,surname,DOB,CustomerID, StrPassword, StrCustomer;
 	private File customerFile= new File("customers.txt");
 	private boolean loop = true;
 	private boolean found = false;
@@ -1309,28 +1308,8 @@ public class Menu extends JFrame{
 
 		deleteCustomer.addActionListener(new ActionListener(  ) {
 			public void actionPerformed(ActionEvent ae) {
-				boolean found = true, loop = true;
 				
-				if(customerList.isEmpty())
-				{
-					JOptionPane.showMessageDialog(null, "There are currently no customers to display. ");
-					dispose();
-					admin();
-				}
-				else
-				{
-					 {
-						    Object customerID = JOptionPane.showInputDialog(frame, "Customer ID of Customer You Wish to Delete:");
-						    
-						    for (Customer aCustomer: customerList){
-						    	
-						    	if(aCustomer.getCustomerID().equals(customerID))
-						    	{
-						    		found = true;
-						    		customer = aCustomer; 
-						    		loop = false;
-						    	}					    	
-						    }
+				customerInformation();
 						    
 						    if(found == false)
 						    {
@@ -1360,59 +1339,63 @@ public class Menu extends JFrame{
 						    }
 						    
 						    
-				}}
-			}
-	     });		
+				}
+			});
+	   		
 		
 		deleteAccount.addActionListener(new ActionListener(  ) {
-			public void actionPerformed(ActionEvent ae) {
-	boolean found = true, loop = true;
+			public void actionPerformed(ActionEvent ae) {{
 				
-				
-				
-				
-					 {
-						    Object customerID = JOptionPane.showInputDialog(frame, "Customer ID of Customer from which you wish to delete an account");
+					customerInformation();
 						    
-						    for (Customer aCustomer: customerList){
-						    	
-						    	if(aCustomer.getCustomerID().equals(customerID))
-						    	{
-						    		found = true;
-						    		customer = aCustomer; 
-						    		loop = false;
-						    	}					    	
-						    }
-						    
-						    if(found == false)
-						    {
-						    	int reply  = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?", JOptionPane.YES_NO_OPTION);
-						    	if (reply == JOptionPane.YES_OPTION) {
-						    		loop = true;
-						    	}
-						    	else if(reply == JOptionPane.NO_OPTION)
-						    	{
-						    		frame.dispose();
-						    		loop = false;
-						    	
-						    		admin();
-						    	}
-						    }  
-						    else
-						    {
-						    	//Here I would make the user select a an account to delete from a combo box. If the account had a balance of 0 then it would be deleted. (I do not have time to do this)
-						    }
-						    
-						    
-				}}
-			
+					if(found == false){
+						int reply  = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?", JOptionPane.YES_NO_OPTION);
+					if (reply == JOptionPane.YES_OPTION){
+						loop = true;
+					}
+					else if(reply == JOptionPane.NO_OPTION)
+					{
+						 frame.dispose();
+						 loop = false;
+						 admin();
+					}
+					}  
+					else{
+						String[] choices = { "Current Account", "Deposit Account" };
+					    JComboBox combobox=new JComboBox(choices);   
+					    
+					    if(combobox.equals("Current Account"))
+					    {
+					    	if(customerCurrentAccount.getBalance() < 0) {
+					    		customerList.remove(customerCurrentAccount);
+					    	}
+					    	else {
+					    		JOptionPane.showMessageDialog(frame, "This customer account has money, please make sure account has a balance of 0 before removal",  StrCustomer, JOptionPane.INFORMATION_MESSAGE);
+
+					    	}
+					    	
+					    }
+					    if(combobox.equals("Deposit Account"))
+					    {
+					    	if(customerDepositAccount.getBalance() < 0) {
+					    		customerList.remove(customerDepositAccount);
+					    	}
+					    	else {
+					    		JOptionPane.showMessageDialog(frame, "This customer account has money, please make sure account has a balance of 0 before removal",  StrCustomer, JOptionPane.INFORMATION_MESSAGE);
+
+					    	}
+					    }
+					}	    
+				}}		
 	     });		
 		returnButton.addActionListener(new ActionListener(  ) {
 			public void actionPerformed(ActionEvent ae) {
 				frame.dispose();
 				menuStart();				
 			}
-	     });
+	     });		
+	
+	
 		
 customerOverDraftButton.addActionListener(new ActionListener( ){
 			
