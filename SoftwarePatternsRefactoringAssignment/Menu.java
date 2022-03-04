@@ -571,9 +571,15 @@ public class Menu extends JFrame{
 		accountPanel.add(accountButton);
 		accountButton.setPreferredSize(new Dimension(250, 20));
 		
+		JPanel customerOverdraftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JButton customerOverDraftButton = new JButton("Add an overdraft");
+		customerOverdraftPanel.add(customerOverDraftButton);
+		
 		JPanel returnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		JButton returnButton = new JButton("Exit Admin Menu");
 		returnPanel.add(returnButton);
+		
+		
 
 		JLabel label1 = new JLabel("Please select an option");
 		
@@ -587,8 +593,9 @@ public class Menu extends JFrame{
 		content.add(navigatePanel);
 		content.add(summaryPanel);	
 		content.add(deleteCustomerPanel);
-	//	content.add(deleteAccountPanel);
+		content.add(deleteAccountPanel);
 		content.add(returnPanel);
+		content.add(customerOverDraftButton);
 		
 		
 		bankChargesButton.addActionListener(new ActionListener(  ) {
@@ -681,6 +688,8 @@ public class Menu extends JFrame{
 			    			}
 			    		}
 			    	});
+		
+		
 		
 		interestButton.addActionListener(new ActionListener(  ) {
 			public void actionPerformed(ActionEvent ae) {
@@ -1405,7 +1414,143 @@ public class Menu extends JFrame{
 				frame.dispose();
 				menuStart();				
 			}
-	     });		
+	     });
+		
+customerOverDraftButton.addActionListener(new ActionListener( ){
+			
+			public void actionPerformed(ActionEvent ae) {
+				
+				customerInformation();
+			    
+			    if(found == false)
+			    {
+			    	int reply  = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?", JOptionPane.YES_NO_OPTION);
+			    	if (reply == JOptionPane.YES_OPTION){
+			    		loop = true;
+			    	}
+			    	else if(reply == JOptionPane.NO_OPTION)
+			    	{
+			    		frame.dispose();
+			    		loop = false;
+			    	
+			    		admin();
+			    	}
+			    }  
+			    else
+			    {
+			    	frame.dispose();
+			    	frame = new JFrame("Administrator Menu");
+			    	frameSize();
+					windowListener();           
+					frame.setVisible(true);
+				
+				
+				    JComboBox<String> box = new JComboBox<String>();
+				    for (int i =0; i < customer.getAccounts().size(); i++)
+				    {
+				    	
+				    	
+				     box.addItem(customer.getAccounts().get(i).getNumber());
+				    }
+					
+				    
+				    box.getSelectedItem();
+				
+				    JPanel boxPanel = new JPanel();
+					
+					JLabel label = new JLabel("Select an account to create an overdraft for:");
+					boxPanel.add(label);
+					boxPanel.add(box);
+					JPanel buttonPanel = new JPanel();
+					JButton continueButton = new JButton("Apply overdraft");
+					JButton returnButton = new JButton("Return");
+					buttonPanel.add(continueButton);
+					buttonPanel.add(returnButton);
+					Container content = frame.getContentPane();
+					content.setLayout(new GridLayout(2, 1));
+					
+					content.add(boxPanel);
+					content.add(buttonPanel);
+					
+			
+						if(customer.getAccounts().isEmpty())
+						{
+							JOptionPane.showMessageDialog(frame, "This customer has no accounts! \n The admin must add acounts to this customer."   ,"Oops!",  JOptionPane.INFORMATION_MESSAGE);
+							frame.dispose();
+							admin();
+						}
+						else
+						{
+						
+					for(int i = 0; i < customer.getAccounts().size(); i++)
+				    {
+				    	if(customer.getAccounts().get(i).getNumber() == box.getSelectedItem() )
+				    	{
+				    		customerAccount = customer.getAccounts().get(i);
+				    	}
+				    }
+										
+					continueButton.addActionListener(new ActionListener(  ) {
+						public void actionPerformed(ActionEvent ae) {
+						 	double overdraft = 0;
+						 	boolean loop = true;
+						 	
+						 	if(customerAccount.equals(customerCurrentAccount)) {
+								//If the balance is 0, set the account to minus 500
+								if(customerCurrentAccount.getBalance() == 0) {
+									while(loop)
+								 	{
+									String interestString = JOptionPane.showInputDialog(frame, "Enter overdraft amount.");
+									if(isNumeric(interestString))
+									{
+										
+										overdraft = Double.parseDouble(interestString);
+										loop = false;
+										
+										customerAccount.setBalance(customerAccount.getBalance() + (customerAccount.getBalance() + overdraft));
+										
+										JOptionPane.showMessageDialog(frame, overdraft + "overdraft \n new balance = " + customerAccount.getBalance() + euro ,"Success!",  JOptionPane.INFORMATION_MESSAGE);
+										admin();
+									}
+										
+									
+									else
+									{
+										JOptionPane.showMessageDialog(frame, "You must enter a numerical value!" ,"Oops!",  JOptionPane.INFORMATION_MESSAGE);
+										
+									}
+									
+									
+								 	}
+									
+								}else if(customerCurrentAccount.getBalance() > -500){
+									JOptionPane.showMessageDialog(frame, "Unable to give overdraft" ,"Oops!",  JOptionPane.INFORMATION_MESSAGE);
+									frame.dispose();				
+									admin();	
+
+								}
+								
+							}
+						 	
+						 	
+						 	
+										
+						}		
+				     });
+					
+					returnButton.addActionListener(new ActionListener(  ) {
+						public void actionPerformed(ActionEvent ae) {
+							frame.dispose();		
+							menuStart();				
+						}
+				     });	
+					
+						}
+			    }
+			    }
+				
+				
+			});
 	}
 	
 public void customerInformation() {
