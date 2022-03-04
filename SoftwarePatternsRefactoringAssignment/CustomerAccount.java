@@ -1,19 +1,16 @@
 
-
 import java.util.ArrayList; 
 
 public class CustomerAccount  {
    
 	String number;
-	double balance;
+	double balance = 0.0;
 	ArrayList<AccountTransaction> transactionList = new ArrayList<AccountTransaction>();
 
 	//Blank Constructor
 	public CustomerAccount()
 	{
-		this.number = "";
-		this.balance = 0;
-		this.transactionList = null;
+		
 	}
 	
 	//Constructor with Details
