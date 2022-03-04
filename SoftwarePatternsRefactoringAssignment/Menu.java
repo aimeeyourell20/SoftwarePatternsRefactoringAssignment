@@ -33,15 +33,24 @@ public class Menu extends JFrame{
 	private String StrPassword;
 	private Customer customer = null;
 	private CustomerAccount acc = new CustomerAccount();
+	private CustomerAccount customerAccount = new CustomerAccount();
 	private JFrame frame, frame1;
 	private JLabel fName, sName, pps, dob, customerId, password, username;
 	private JTextField fNameTxt, sNameTxt, ppsTxt, dobTxt, customerIdTxt, passwordTxt, usernameTxt;	
 	private Container content;
 	private Customer cust;
-	Admin admin;
+	private CustomerCurrentAccount customerCurrentAccount;
+	private CustomerDepositAccount customerDepositAccount;
+	private Admin admin;
 	private JPanel panel, panel2;
 	private JButton add, cancel;
 	private String PPS,firstName,surname,DOB,CustomerID;
+	private File customerFile= new File("customers.txt");
+	private boolean loop = true;
+	private boolean found = false;
+	private double AccountBalance = 0;
+	private String euro = "€";
+	private double balance = 0;
 	
 	public static void main(String[] args)
 	{
@@ -584,69 +593,33 @@ public class Menu extends JFrame{
 		
 		bankChargesButton.addActionListener(new ActionListener(  ) {
 			public void actionPerformed(ActionEvent ae) {
-				
-				boolean loop = true;
-				
-				boolean found = false;
-			
-				if(customerList.isEmpty())
-				{
-					JOptionPane.showMessageDialog(frame, "There are no customers yet!"  ,"Oops!",  JOptionPane.INFORMATION_MESSAGE);
-					frame.dispose();
-					admin();
-					
-				}
-				else
-				{
-			    while(loop)
-			    {
-			    Object customerID = JOptionPane.showInputDialog(frame, "Customer ID of Customer You Wish to Apply Charges to:");
+				customerInformation();
 			    
-			    for (Customer aCustomer: customerList){
-			    	
-			    	if(aCustomer.getCustomerID().equals(customerID))
-			    	{
-			    		found = true;
-			    		customer = aCustomer; 
-			    		loop = false;
-			    	}					    	
-			    }
-			    
-			    if(found == false)
-			    {
+			    if(found == false){
 			    	int reply  = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?", JOptionPane.YES_NO_OPTION);
-			    	if (reply == JOptionPane.YES_OPTION) {
+			    if (reply == JOptionPane.YES_OPTION){
 			    		loop = true;
-			    	}
-			    	else if(reply == JOptionPane.NO_OPTION)
-			    	{
-			    		frame.dispose();
-			    		loop = false;
-			    	
-			    		admin();
+			    }
+			    else if(reply == JOptionPane.NO_OPTION){
+			    	frame.dispose();
+			    	loop = false;
+			    	admin();
 			    	}
 			    }  
 			    else
 			    {
 			    	frame.dispose();
 			    	frame = new JFrame("Administrator Menu");
-					frame.setSize(400, 300);
-					frame.setLocation(200, 200);
-					frame.addWindowListener(new WindowAdapter() {
-						public void windowClosing(WindowEvent we) { System.exit(0); }
-					});          
+			    	frameSize();
+					windowListener();   
 					frame.setVisible(true);
-				
 				
 				    JComboBox<String> box = new JComboBox<String>();
 				    for (int i =0; i < customer.getAccounts().size(); i++)
-				    {
-				    	
-				    	
+				    {	
 				     box.addItem(customer.getAccounts().get(i).getNumber());
 				    }
 					
-				    
 				    box.getSelectedItem();
 				
 				    JPanel boxPanel = new JPanel();
@@ -664,49 +637,37 @@ public class Menu extends JFrame{
 					content.add(buttonPanel);
 					
 			
-						if(customer.getAccounts().isEmpty())
-						{
+					if(customer.getAccounts().isEmpty()){
 							JOptionPane.showMessageDialog(frame, "This customer has no accounts! \n The admin must add acounts to this customer."   ,"Oops!",  JOptionPane.INFORMATION_MESSAGE);
 							frame.dispose();
 							admin();
-						}
-						else
-						{
+					}
+					else{
 						
-					for(int i = 0; i < customer.getAccounts().size(); i++)
-				    {
-				    	if(customer.getAccounts().get(i).getNumber() == box.getSelectedItem() )
-				    	{
-				    		acc = customer.getAccounts().get(i);
+					for(int i = 0; i < customer.getAccounts().size(); i++){
+				    	if(customer.getAccounts().get(i).getNumber() == box.getSelectedItem()){
+				    		customerAccount = customer.getAccounts().get(i);
 				    	}
 				    }
 										
 					continueButton.addActionListener(new ActionListener(  ) {
 						public void actionPerformed(ActionEvent ae) {
-							String euro = "\u20ac";
-						 	
-							
-							if(acc instanceof CustomerDepositAccount)
-							{
-							
-							
+							String euro = "€";
+				
+							if(customerAccount instanceof CustomerDepositAccount){
+						
 							JOptionPane.showMessageDialog(frame, "25" + euro + " deposit account fee aplied."  ,"",  JOptionPane.INFORMATION_MESSAGE);
-							acc.setBalance(acc.getBalance()-25);
-							JOptionPane.showMessageDialog(frame, "New balance = " + acc.getBalance() ,"Success!",  JOptionPane.INFORMATION_MESSAGE);
+							customerAccount.setBalance(customerAccount.getBalance()-25);
+							JOptionPane.showMessageDialog(frame, "New balance = " + customerAccount.getBalance() ,"Success!",  JOptionPane.INFORMATION_MESSAGE);
 							}
 
-							if(acc instanceof CustomerCurrentAccount)
-							{
-							
-							
+							if(customerAccount instanceof CustomerCurrentAccount){
 							JOptionPane.showMessageDialog(frame, "15" + euro + " current account fee aplied."  ,"",  JOptionPane.INFORMATION_MESSAGE);
-							acc.setBalance(acc.getBalance()-25);
-							JOptionPane.showMessageDialog(frame, "New balance = " + acc.getBalance() ,"Success!",  JOptionPane.INFORMATION_MESSAGE);
+							customerAccount.setBalance(customerAccount.getBalance()-25);
+							JOptionPane.showMessageDialog(frame, "New balance = " + customerAccount.getBalance() ,"Success!",  JOptionPane.INFORMATION_MESSAGE);
 							}
-							
-							
 							frame.dispose();				
-						admin();				
+							admin();				
 						}		
 				     });
 					
@@ -714,18 +675,12 @@ public class Menu extends JFrame{
 						public void actionPerformed(ActionEvent ae) {
 							frame.dispose();		
 							menuStart();				
-						}
-				     });	
-					
-						}
-			    }
-			    }
-			    }
-			    
-			    
-			    
-			}		
-	     });
+										}
+				     				});	
+								}
+			    			}
+			    		}
+			    	});
 		
 		interestButton.addActionListener(new ActionListener(  ) {
 			public void actionPerformed(ActionEvent ae) {
@@ -1453,6 +1408,36 @@ public class Menu extends JFrame{
 	     });		
 	}
 	
+public void customerInformation() {
+		
+		readUserFile();
+	
+		if(customerList.isEmpty())
+		{
+			JOptionPane.showMessageDialog(frame, "There are no customers yet!"  ,"Oops!",  JOptionPane.INFORMATION_MESSAGE);
+			frame.dispose();
+			admin();
+			
+		}
+		else
+		{
+		
+	    while(loop)
+	    {
+	    Object customerID = JOptionPane.showInputDialog(frame, "Enter Customer ID:");
+	    
+	    for (Customer aCustomer: customerList){
+	    	
+	    	if(aCustomer.getCustomerID().equals(customerID))
+	    	{
+	    		found = true;
+	    		customer = aCustomer;
+	    			}					    	
+	    		}
+	    	}
+		}
+	}
+
 	public void customer(Customer e1)
 	{	
 		frame = new JFrame("Customer Menu");
