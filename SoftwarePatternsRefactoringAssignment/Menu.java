@@ -1013,36 +1013,36 @@ public class Menu extends JFrame{
 				}
 				else
 				{
-		
-				JButton first, previous, next, last, cancel;
-				JPanel gridPanel, buttonPanel, cancelPanel;			
 	
 				Container content = getContentPane();
 				
 				content.setLayout(new BorderLayout());
 				
-				buttonPanel = new JPanel();
-				gridPanel = new JPanel(new GridLayout(8, 2));
-				cancelPanel = new JPanel();
+				JPanel buttonPanel = new JPanel();
+				JPanel gridPanel = new JPanel(new GridLayout(8, 2));
+				JPanel cancelPanel = new JPanel();
 								
 				fName = new JLabel("First Name:", SwingConstants.LEFT);
 				sName = new JLabel("Surname:", SwingConstants.LEFT);
 				pps = new JLabel("PPS Number:", SwingConstants.LEFT);
 				dob = new JLabel("Date of birth", SwingConstants.LEFT);
 				customerId = new JLabel("CustomerID:", SwingConstants.LEFT);
-				password = new JLabel("StrPassword:", SwingConstants.LEFT);
+				password = new JLabel("Password:", SwingConstants.LEFT);
 				fNameTxt = new JTextField(20);
 				sNameTxt = new JTextField(20);
-				ppsTxt = new JTextField(20);
-				dobTxt = new JTextField(20);
-				customerIdTxt = new JTextField(20);
-				passwordTxt = new JTextField(20);
+				ppsTxt = new JTextField();
+				dobTxt = new JTextField();
+				customerIdTxt = new JTextField();
+				passwordTxt = new JTextField();
 				
-				first = new JButton("First");
-				previous = new JButton("Previous");
-				next = new JButton("Next");
-				last = new JButton("Last");
-				cancel = new JButton("Cancel");
+				JButton first = new JButton("First");
+				JButton previous = new JButton("Previous");
+				JButton next = new JButton("Next");
+				JButton last = new JButton("Last");
+				JButton cancel = new JButton("Cancel");
+				JButton findCustomerAccount = new JButton("Find Customer Account");
+				JButton findCustomerSurname = new JButton("Find Customer by Surname");
+				JButton findAllCustomers = new JButton("Find all Customers"); 
 				
 				fNameTxt.setText(customerList.get(0).getFirstName());
 				sNameTxt.setText(customerList.get(0).getSurname());
@@ -1075,6 +1075,9 @@ public class Menu extends JFrame{
 				buttonPanel.add(previous);
 				buttonPanel.add(next);
 				buttonPanel.add(last);
+				buttonPanel.add(findCustomerAccount);
+				buttonPanel.add(findCustomerSurname);
+				buttonPanel.add(findAllCustomers);
 				
 				cancelPanel.add(cancel);
 		
@@ -1096,13 +1099,8 @@ public class Menu extends JFrame{
 				previous.addActionListener(new ActionListener(  ) {
 					public void actionPerformed(ActionEvent ae) {
 								
-						if(position < 1)
-						{
-							//don't do anything
-						}
-						else
-						{
-							position = position - 1;
+						
+						position = position - 1;
 							
 						fNameTxt.setText(customerList.get(position).getFirstName());
 						sNameTxt.setText(customerList.get(position).getSurname());
@@ -1110,20 +1108,15 @@ public class Menu extends JFrame{
 						dobTxt.setText(customerList.get(position).getDOB());
 						customerIdTxt.setText(customerList.get(position).getCustomerID());
 						passwordTxt.setText(customerList.get(position).getPassword());
-						}			
-							}		
-					     });
+									
+					}
+			 });
 				
 				next.addActionListener(new ActionListener(  ) {
 					public void actionPerformed(ActionEvent ae) {
 					
-						if(position == customerList.size()-1)
-						{
-							//don't do anything
-						}
-						else
-						{
-							position = position + 1;
+						
+						position = position + 1;
 							
 						fNameTxt.setText(customerList.get(position).getFirstName());
 						sNameTxt.setText(customerList.get(position).getSurname());
@@ -1131,7 +1124,7 @@ public class Menu extends JFrame{
 						dobTxt.setText(customerList.get(position).getDOB());
 						customerIdTxt.setText(customerList.get(position).getCustomerID());
 						passwordTxt.setText(customerList.get(position).getPassword());
-						}		
+								
 						
 						
 												
@@ -1152,6 +1145,70 @@ public class Menu extends JFrame{
 							}		
 					     });
 				
+				findCustomerAccount.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent ae) {
+						Object customerID = JOptionPane.showInputDialog(frame, "Customer ID of Customer You Wish to Find:");
+					
+							for(int i = 0; i < customerAccountList.size(); i++) {
+								if(customerAccountList.get(i).getNumber().equals(customerID)) {
+									
+									fNameTxt.setText(customerList.get(position).getFirstName());
+									sNameTxt.setText(customerList.get(position).getSurname());
+									ppsTxt.setText(customerList.get(position).getPPS());
+									dobTxt.setText(customerList.get(position).getDOB());
+									customerIdTxt.setText(customerList.get(position).getCustomerID());
+									passwordTxt.setText(customerList.get(position).getPassword());
+									
+								
+							}
+							
+						}
+						
+					}
+					
+				});
+				
+				findCustomerSurname.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent ae) {
+						Object customerSurname = JOptionPane.showInputDialog(frame, "Customer surname of Customer You Wish to Find:");
+						
+							for(int i = 0; i < customerAccountList.size(); i++) {
+								if(customerList.get(i).getSurname().equals(customerSurname)) {
+									
+									fNameTxt.setText(customerList.get(position).getFirstName());
+									sNameTxt.setText(customerList.get(position).getSurname());
+									ppsTxt.setText(customerList.get(position).getPPS());
+									dobTxt.setText(customerList.get(position).getDOB());
+									customerIdTxt.setText(customerList.get(position).getCustomerID());
+									passwordTxt.setText(customerList.get(position).getPassword());
+									
+							}
+						}
+						
+					}
+					
+				});
+				
+				findAllCustomers.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent ae) {
+						Object customerSurname = JOptionPane.showInputDialog(frame, "Find all customers");
+						
+							for(int i = 0; i < customerAccountList.size(); i++) {
+							
+									
+									fNameTxt.setText(customerList.get(position).getFirstName());
+									sNameTxt.setText(customerList.get(position).getSurname());
+									ppsTxt.setText(customerList.get(position).getPPS());
+									dobTxt.setText(customerList.get(position).getDOB());
+									customerIdTxt.setText(customerList.get(position).getCustomerID());
+									passwordTxt.setText(customerList.get(position).getPassword());
+						}
+						
+					}
+					
+				});
+				
+				
 				cancel.addActionListener(new ActionListener(  ) {
 					public void actionPerformed(ActionEvent ae) {				
 						dispose();
@@ -1160,11 +1217,10 @@ public class Menu extends JFrame{
 					     });			
 				setContentPane(content);
 				setSize(400, 300);
-			       setVisible(true);
-					}		
+			    setVisible(true);
+				}		
 			}
 		});
-		
 		accountButton.addActionListener(new ActionListener(  ) {
 			public void actionPerformed(ActionEvent ae) {
 				frame.dispose();
