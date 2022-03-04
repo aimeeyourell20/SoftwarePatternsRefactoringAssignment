@@ -3,6 +3,12 @@
 import java.awt.*;
 
 import java.awt.event.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -15,6 +21,7 @@ import java.util.ArrayList;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Scanner;
 
 public class Menu extends JFrame{
 	
@@ -111,6 +118,57 @@ public class Menu extends JFrame{
 				}
 			});frame.setVisible(true);	
 	}
+	
+	//Adds user details to the file
+		public void addUserToFile() {
+			File fileName = new File("customers1.txt");
+		    try{
+		        FileWriter fw = new FileWriter(fileName, true);
+		        Writer writer = new BufferedWriter(fw);
+		        int entry = customerList.size();
+		        for (int i = 0; i < entry; i++) {
+		        	writer.write(customerList.get(i).toString() + "\n"); 
+		        }
+		        writer.close();
+		    }
+		    catch(Exception exception) {
+		        JOptionPane.showMessageDialog(null,"File cannot be created");
+		    }
+		}
+		
+		//Reads the information from the file
+		public void readUserFile() {
+			
+	        try {
+	            Scanner input = new Scanner(new FileReader("customers1.txt"));
+	            
+	            while(input.hasNextLine()) {
+	            	String line = input.nextLine();
+	            	if(line.contains("PPS number")) {
+	            		System.out.println(line);
+	            	}
+	            	if(line.contains("Surname")) {
+	            		System.out.println(line);
+	            	}
+	            	if(line.contains("First Name")) {
+	            		System.out.println(line);
+	            	}
+	            	if(line.contains("Date of Birth")) {
+	            		System.out.println(line);
+	            	}
+	            	if(line.contains("Customer ID")) {
+	            		System.out.println(line);
+	            	}
+	            	if(line.contains("Password")) {
+	            		System.out.println(line);
+	            	}
+	            }
+	           
+	        } catch (IOException e) {
+	           
+	        }
+	      
+		}
 	
 	//Adds panel information
 		public void addPanelInfo() {
