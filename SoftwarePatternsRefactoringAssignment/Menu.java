@@ -187,7 +187,7 @@ public class Menu extends JFrame{
 			String firstName = fNameTxt.getText();
 			String surname = sNameTxt.getText();
 			String DOB = dobTxt.getText();
-			StrPassword = StrPassword();
+			StrPassword =  passwordCheck();
 
 			String CustomerID = "ID"+PPS ;
 			
@@ -221,6 +221,27 @@ public class Menu extends JFrame{
 			
 			frame1.dispose();
 			menuStart();
+			
+		}
+		
+		//Checks password to ensure it fits criteria
+		private String passwordCheck() {
+			String StrPassword = "";
+			boolean loop = true;
+			while(loop){
+			 StrPassword = JOptionPane.showInputDialog(frame, "Enter 7 character StrPassword;");
+			
+			 if(StrPassword.length() != 7)//Making sure StrPassword is 7 characters
+			    {
+			    	JOptionPane.showMessageDialog(null, null, "StrPassword must be 7 charatcers long", JOptionPane.OK_OPTION);
+			    }
+			 else
+			 {
+				 loop = false;
+			 }
+			 
+			}
+			return StrPassword;
 			
 		}
 
