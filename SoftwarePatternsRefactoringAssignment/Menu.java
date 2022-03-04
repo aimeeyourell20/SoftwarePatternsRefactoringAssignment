@@ -102,6 +102,7 @@ public class Menu extends JFrame{
 					if(user.equals("New Admin")	)
 					{
 						newAdmin();
+						
 					}
 				}
 			});frame.setVisible(true);	
