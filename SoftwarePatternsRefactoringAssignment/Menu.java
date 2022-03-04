@@ -527,12 +527,7 @@ public class Menu extends JFrame{
 	{
 		dispose();
 		
-		frame = new JFrame("Administrator Menu");
-		frame.setSize(400, 400);
-		frame.setLocation(200, 200);
-		frame.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent we) { System.exit(0); }
-		});          
+		frame = new JFrame("Administrator Menu");    
 		frame.setVisible(true);
 		
 		JPanel deleteCustomerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -588,7 +583,7 @@ public class Menu extends JFrame{
 		JLabel label1 = new JLabel("Please select an option");
 		
 		content = frame.getContentPane();
-		content.setLayout(new GridLayout(9, 1));
+		content.setLayout(new GridLayout(11, 1));
 		content.add(label1);
 		content.add(accountPanel);
 		content.add(bankChargesPanel);
@@ -604,7 +599,7 @@ public class Menu extends JFrame{
 		
 		bankChargesButton.addActionListener(new ActionListener(  ) {
 			public void actionPerformed(ActionEvent ae) {
-				customerInformation();
+				checkingForCustomer();
 			    
 			    if(found == false){
 			    	int reply  = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?", JOptionPane.YES_NO_OPTION);
@@ -698,7 +693,7 @@ public class Menu extends JFrame{
 		interestButton.addActionListener(new ActionListener(  ) {
 			public void actionPerformed(ActionEvent ae) {
 				
-				customerInformation();
+				checkingForCustomer();
 			    
 			    if(found == false)
 			    {
@@ -1314,7 +1309,7 @@ public class Menu extends JFrame{
 		deleteCustomer.addActionListener(new ActionListener(  ) {
 			public void actionPerformed(ActionEvent ae) {
 				
-				customerInformation();
+				checkingForCustomer();
 						    
 						    if(found == false)
 						    {
@@ -1351,7 +1346,7 @@ public class Menu extends JFrame{
 		deleteAccount.addActionListener(new ActionListener(  ) {
 			public void actionPerformed(ActionEvent ae) {{
 				
-					customerInformation();
+					checkingForCustomer();
 						    
 					if(found == false){
 						int reply  = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?", JOptionPane.YES_NO_OPTION);
@@ -1406,7 +1401,7 @@ customerOverDraftButton.addActionListener(new ActionListener( ){
 			
 			public void actionPerformed(ActionEvent ae) {
 				
-				customerInformation();
+				checkingForCustomer();
 			    
 			    if(found == false)
 			    {
@@ -1539,7 +1534,7 @@ customerOverDraftButton.addActionListener(new ActionListener( ){
 			});
 	}
 	
-public void customerInformation() {
+public void checkingForCustomer() {
 		
 		readUserFile();
 	
