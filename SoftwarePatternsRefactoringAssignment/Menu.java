@@ -1280,7 +1280,7 @@ public class Menu extends JFrame{
 				    	int randomPIN = (int)(Math.random()*9000)+1000;
 				        String pin = String.valueOf(randomPIN);				    
 				        ATMCard atm = new ATMCard(randomPIN, valid);				        
-				    	CustomerCurrentAccount current = new CustomerCurrentAccount(atm, pin, AccountBalance, transactionList);
+				    	CustomerCurrentAccount current = new CustomerCurrentAccount(atm, AccountBalance);
 				    	customer.getAccounts().add(current);
 				    	JOptionPane.showMessageDialog(frame, "Account number = " + accountNumber +"\n PIN = " + pin  ,"Account created.",  JOptionPane.INFORMATION_MESSAGE);				    	
 				    	frame.dispose();
