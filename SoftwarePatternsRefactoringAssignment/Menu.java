@@ -644,9 +644,7 @@ public class Menu extends JFrame{
 					
 			
 					if(customer.getAccounts().isEmpty()){
-							JOptionPane.showMessageDialog(frame, "This customer has no accounts! \n The admin must add acounts to this customer."   ,"Oops!",  JOptionPane.INFORMATION_MESSAGE);
-							frame.dispose();
-							admin();
+							noCustomerAccounts();
 					}
 					else{
 						
@@ -748,9 +746,7 @@ public class Menu extends JFrame{
 			
 						if(customer.getAccounts().isEmpty())
 						{
-							JOptionPane.showMessageDialog(frame, "This customer has no accounts! \n The admin must add acounts to this customer."   ,"Oops!",  JOptionPane.INFORMATION_MESSAGE);
-							frame.dispose();
-							admin();
+							noCustomerAccounts();
 						}
 						else
 						{
@@ -814,9 +810,7 @@ public class Menu extends JFrame{
 				
 				if(customerList.isEmpty())
 				{
-					JOptionPane.showMessageDialog(frame, "There are no customers yet!"  ,"Oops!",  JOptionPane.INFORMATION_MESSAGE);
-					frame.dispose();
-					admin();
+					noCustomerAccounts();
 					
 				}
 				else
@@ -824,7 +818,7 @@ public class Menu extends JFrame{
 				
 			    while(loop)
 			    {
-			    Object customerID = JOptionPane.showInputDialog(frame);
+			    Object customerID = JOptionPane.showInputDialog(frame, "Enter customer ID");
 			    
 			    for (Customer aCustomer: customerList){
 			    	
@@ -948,9 +942,6 @@ public class Menu extends JFrame{
 			public void actionPerformed(ActionEvent ae) {
 				frame.dispose();
 				frame = new JFrame("Summary of Transactions");
-				frame.setSize(400, 700);
-				frame.setLocation(200, 200);
-				windowListener();           
 				frame.setVisible(true);
 				
 				JLabel label1 = new JLabel("Summary of all transactions: ");
@@ -1202,6 +1193,16 @@ public class Menu extends JFrame{
 									customerIdTxt.setText(customerList.get(position).getCustomerID());
 									passwordTxt.setText(customerList.get(position).getPassword());
 						}
+							
+							String[] details = {"pps", "surname", "firstname", "dob", "customerId"};
+							
+							//JTable table = new JTable(customerList,details);
+							JTable table = new JTable();
+							getContentPane().add(new JScrollPane(table));
+					        setSize(400, 100);
+					        setTitle("All Customers");
+					        setVisible(true);
+					        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 						
 					}
 					
@@ -1456,9 +1457,7 @@ customerOverDraftButton.addActionListener(new ActionListener( ){
 			
 						if(customer.getAccounts().isEmpty())
 						{
-							JOptionPane.showMessageDialog(frame, "This customer has no accounts! \n The admin must add acounts to this customer."   ,"Oops!",  JOptionPane.INFORMATION_MESSAGE);
-							frame.dispose();
-							admin();
+							noCustomerAccounts();
 						}
 						else
 						{
@@ -1534,6 +1533,11 @@ customerOverDraftButton.addActionListener(new ActionListener( ){
 			});
 	}
 	
+	public void noCustomerAccounts() {
+		JOptionPane.showMessageDialog(frame, "This customer has no accounts! \n The admin must add acounts to this customer."   ,"Oops!",  JOptionPane.INFORMATION_MESSAGE);
+		frame.dispose();
+		admin();
+	}
 public void checkingForCustomer() {
 		
 		readUserFile();
