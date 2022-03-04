@@ -41,7 +41,7 @@ public class Menu extends JFrame{
 	private CustomerCurrentAccount customerCurrentAccount;
 	private CustomerDepositAccount customerDepositAccount;
 	private Admin admin;
-	private JPanel panel, panel2;
+	private JPanel panel, panel2, buttonPanel;
 	private JButton add, cancel;
 	private String PPS,firstName,surname,DOB,CustomerID, StrPassword, StrCustomer;
 	private File customerFile= new File("customers.txt");
@@ -59,12 +59,7 @@ public class Menu extends JFrame{
 	
 	public void menuStart()
 	{
-		   /*The menuStart method asks the user if they are a new customer, an existing customer or an admin. It will then start the create customer process
-		  if they are a new customer, or will ask them to log in if they are an existing customer or admin.*/
-		
-			
-		
-			
+		  
 			frame = new JFrame("User Type");
 			frame.setSize(400, 300);
 			frame.setLocation(200, 200);
@@ -266,6 +261,15 @@ public class Menu extends JFrame{
 					frame1.dispose();
 				    ArrayList<CustomerAccount> accounts = new ArrayList<CustomerAccount> ();
 					customer = new Customer(PPS, surname, firstName, DOB, CustomerID, StrPassword, accounts);
+					if(firstName.length() > 20) {
+						JOptionPane.showMessageDialog(frame, "Firstname must be less then 20 characters",  CustomerID, JOptionPane.INFORMATION_MESSAGE);
+
+					}
+					else if(surname.length() > 20) {
+						JOptionPane.showMessageDialog(frame, "Surname must be less then 20 characters",  CustomerID, JOptionPane.INFORMATION_MESSAGE);
+
+					}
+					else {
 					//Ensures that the accounts are unique
 					if(customerList.contains(CustomerID))
 					{
@@ -280,6 +284,7 @@ public class Menu extends JFrame{
 						addUserToFile();
 						menuStart();
 						frame.dispose();
+					}
 					}
 									
 					
@@ -734,7 +739,7 @@ public class Menu extends JFrame{
 					JLabel label = new JLabel("Select an account to apply interest to:");
 					boxPanel.add(label);
 					boxPanel.add(box);
-					JPanel buttonPanel = new JPanel();
+					buttonPanel = new JPanel();
 					JButton continueButton = new JButton("Apply Interest");
 					JButton returnButton = new JButton("Return");
 					buttonPanel.add(continueButton);
@@ -1017,7 +1022,7 @@ public class Menu extends JFrame{
 				
 				content.setLayout(new BorderLayout());
 				
-				JPanel buttonPanel = new JPanel();
+				buttonPanel = new JPanel();
 				JPanel gridPanel = new JPanel(new GridLayout(8, 2));
 				JPanel cancelPanel = new JPanel();
 								
@@ -1630,7 +1635,6 @@ public void customer(Customer customer1)
 	
 	JPanel statementPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 	JButton statementButton = new JButton("Display Bank Statement");
-	
 	statementPanel.add(statementButton);
 	
 	JPanel lodgementPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
